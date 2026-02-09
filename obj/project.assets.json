@@ -13,6 +13,15 @@
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
+      },
+      "NetCoreAudio/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/NetCoreAudio.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/NetCoreAudio.dll": {}
+        }
       }
     }
   },
@@ -94,12 +103,28 @@
         "tools/netframework/build/Microsoft.NET.ILLink.targets",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "NetCoreAudio/2.0.0": {
+      "sha512": "uDZcOG1pHcfxoKr9LrYvh+zHf+3JlL3tWly+o4mICHm5s9INBzcJVWiO2hh17RPyZQ0Fvqiw4qsa396l77JM0Q==",
+      "type": "package",
+      "path": "netcoreaudio/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "icon.jpg",
+        "lib/netstandard2.1/NetCoreAudio.dll",
+        "netcoreaudio.2.0.0.nupkg.sha512",
+        "netcoreaudio.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
       "Microsoft.DotNet.ILCompiler >= 10.0.2",
-      "Microsoft.NET.ILLink.Tasks >= 10.0.2"
+      "Microsoft.NET.ILLink.Tasks >= 10.0.2",
+      "NetCoreAudio >= 2.0.0"
     ]
   },
   "packageFolders": {
@@ -156,6 +181,10 @@
             "target": "Package",
             "version": "[10.0.2, )",
             "autoReferenced": true
+          },
+          "NetCoreAudio": {
+            "target": "Package",
+            "version": "[2.0.0, )"
           }
         },
         "imports": [

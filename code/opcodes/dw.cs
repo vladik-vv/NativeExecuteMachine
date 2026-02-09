@@ -5,7 +5,7 @@ struct dw{
     public static void run(){
         
         if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
+            Console.Write(Errors.Print(0x02));
             return;
         }
                     
@@ -14,16 +14,14 @@ struct dw{
             KillProcessRAM();
 
         if (varsNames.Contains(parts[1])){
-            isWarn = true;
-            Console.WriteLine($"\nLine {num + 1} Error: Redefinition of symbol");
+            Console.Write(Errors.Print(0x05));
             return;
         }
 
         try {
             varsShort.Add(parts[1], Convert.ToInt16(parts[2]));
         } catch {
-            Console.WriteLine($"\nLine {num + 1} Error: Segmentation fault");
-            isWarn = true;
+            Console.Write(Errors.Print(0x06));
             return;
         }
 

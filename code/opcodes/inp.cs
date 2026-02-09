@@ -3,11 +3,6 @@ using static Interpreter;
 #pragma warning disable CS8981
 struct inp{
     public static void run(){
-
-        if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
-            return;
-        }
         
         if (parts.Count() > 1){
             if (registres.Keys.Contains(parts[1])){ // если входные данные идут в регистр
@@ -45,13 +40,11 @@ struct inp{
                             }
                         }
                     } catch {
-                        Console.Write($"\nLine {num + 1} Error: Segmentation fault");
-                        isWarn = true;
+                        Console.Write(Errors.Print(0x06));
                         return;
                     }
                 } else {
-                    Console.Write($"\nLine {num + 1} Error: Incorrect address");
-                    isWarn = true;
+                    Console.Write(Errors.Print(0x04));
                     return;
                 }
             }

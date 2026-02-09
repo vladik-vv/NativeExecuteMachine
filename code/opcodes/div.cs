@@ -1,131 +1,125 @@
 using static PC.Computer;
 using static Interpreter;
+using static ConvertValue;
+using System.Numerics;
 #pragma warning disable CS8981
-struct div{
 
+struct div{
     public static void run(){
 
-        if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
-            return;
-        }
+        if(!CheckArgument.Check(2)){ Console.Write(Errors.Print(0x02)); return; }
 
         try {
-            if (registres.Keys.Contains(parts[1])){ // если первый аргумент это регистр
-                if (registres.Keys.Contains(parts[2])){ // если второй аргумент регистр
-                    registres[parts[1]] /= registres[parts[2]];
+            CheckerMassive(1);
+            switch(CheckVarName(currentArr.First().Key)){
+                case "arrsByte":{
+                    arrsByte[currentArr.First().Key][currentArr.First().Value] /= Convert.ToByte(ArgDouble);
                     num++;
                     return;
-                } else { // если второй аргумент это переменнная
-                    switch (CheckVarName(parts[2])){
-                        case "string":{
-                            isWarn = true;
-                            Console.Write($"\nLine {num + 1} Error - String and registres?");
-                            return;   
-                        }
-                        case "byte":{
-                            registres[parts[1]] /= Convert.ToDouble(varsByte[parts[2]]);
-                            num++;
-                            return;
-                        }
-                        case "short":{
-                            registres[parts[1]] /= Convert.ToDouble(varsShort[parts[2]]);
-                            num++;
-                            return;
-                        }
-                        case "float":{
-                            registres[parts[1]] /= Convert.ToDouble(varsFloat[parts[2]]);
-                            num++;
-                            return;
-                        }
-                        case "double":{
-                            registres[parts[1]] /= varsDouble[parts[2]];
-                            num++;
-                            return;
-                        }
-                        case "none":{
-                            break;
-                        }
-                    }
                 }
-            } else if (CheckVarContain(parts[1])){ // если первый аргумент это переменная
-                switch (CheckVarName(parts[1])){
-                    case "string":{ // если первая переменная стринг
-                        Console.Write($"\nLine {num + 1} Error - String and registres?");
-                        isWarn = true;
-                        return;
-                    }
-                    case "byte":{
-                        if (registres.Keys.Contains(parts[2])){ // если второй аргумент регистр  
-                            varsByte[parts[1]] /= Convert.ToByte(registres[parts[2]]);
+                case "arrsShort":{
+                    arrsShort[currentArr.First().Key][currentArr.First().Value] /= Convert.ToInt16(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "arrsFloat":{
+                    arrsFloat[currentArr.First().Key][currentArr.First().Value] /= Convert.ToInt32(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "arrsDouble":{
+                    arrsDouble[currentArr.First().Key][currentArr.First().Value] /= Convert.ToInt64(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "arrsString":{
+                    Errors.Print(0x07);
+                    return;
+                }
+            }
+            num++;
+            return;
+        } catch {}
+
+        if (CheckVectorCord(1)) {
+            if (CheckVarContain(txt.ToString())){
+                switch (CheckVarName(txt.ToString())){
+                    case "vec2":{
+                        if (currentVectorCord == 'x'){
+                            vec2s[txt.ToString()] = new Vector2(vec2s[txt.ToString()].X / (float)ArgDouble, vec2s[txt.ToString()].Y);
+                            num++;
+                            return; 
+                        } else if (currentVectorCord == 'y'){
+                            vec2s[txt.ToString()] = new Vector2(vec2s[txt.ToString()].X, vec2s[txt.ToString()].Y / (float)ArgDouble);
                             num++;
                             return;
-                        } else if (CheckVarContain(parts[2])){ // если второй аргумент переменная
-                            varsByte[parts[1]] /= varsByte[parts[2]];
-                            num++;
-                            return;
-                        } else { // если второй аргумент это готовое значение
-                            varsByte[parts[1]] /= Convert.ToByte(parts[2]);
-                            num++;
-                            return;
-                        }
-                    }
-                    case "short":{
-                        if (registres.Keys.Contains(parts[2])){ // если второй аргумент регистр  
-                            varsShort[parts[1]] /= Convert.ToInt16(registres[parts[2]]);
-                            num++;
-                            return;
-                        } else if (CheckVarContain(parts[2])){ // если второй аргумент переменная
-                            varsShort[parts[1]] /= varsShort[parts[2]];
-                            num++;
-                            return;
-                        } else { // если второй аргумент это готовое значение
-                            varsShort[parts[1]] /= Convert.ToInt16(parts[2]);
-                            num++;
-                            return;
-                        }
-                    }
-                    case "float":{
-                        if (registres.Keys.Contains(parts[2])){ // если второй аргумент регистр  
-                            varsFloat[parts[1]] /= Convert.ToSingle(registres[parts[2]]);
-                            num++;
-                            return;
-                        } else if (CheckVarContain(parts[2])){ // если второй аргумент переменная
-                            varsFloat[parts[1]] /= varsFloat[parts[2]];
-                            num++;
-                            return;
-                        } else { // если второй аргумент это готовое значение
-                            varsFloat[parts[1]] /= Convert.ToSingle(parts[2]);
-                            num++;
+                        } else {
+                            Errors.Print(0x08);
                             return;
                         }
                     }
-                    case "double":{
-                        if (registres.Keys.Contains(parts[2])){ // если второй аргумент регистр  
-                            varsDouble[parts[1]] /= Convert.ToDouble(registres[parts[2]]);
+                    case "vec3":{
+                        if (currentVectorCord == 'x'){
+                            vec3s[txt.ToString()] = new Vector3(vec3s[txt.ToString()].X / (float)ArgDouble, vec3s[txt.ToString()].Y, vec3s[txt.ToString()].Z);
+                            num++;
+                            return; 
+                        } else if (currentVectorCord == 'y'){
+                            vec3s[txt.ToString()] = new Vector3(vec3s[txt.ToString()].X, vec3s[txt.ToString()].Y / (float)ArgDouble, vec3s[txt.ToString()].Z);
                             num++;
                             return;
-                        } else if (CheckVarContain(parts[2])){ // если второй аргумент переменная
-                            varsDouble[parts[1]] /= varsDouble[parts[2]];
+                        } else if(currentVectorCord == 'z'){
+                            vec3s[txt.ToString()] = new Vector3(vec3s[txt.ToString()].X, vec3s[txt.ToString()].Y, vec3s[txt.ToString()].Z / (float)ArgDouble);
                             num++;
                             return;
-                        } else { // если второй аргумент это готовое значение
-                            varsDouble[parts[1]] /= Convert.ToDouble(parts[2]);
-                            num++;
+                        } else {
+                            Errors.Print(0x08);
                             return;
                         }
                     }
                 }
             }
-            
-            registres[parts[1]] /= double.Parse(parts[2]);
+        }
+        
+        txt.Clear();
+
+        if (registres.ContainsKey(parts[1])){
+            registres[parts[1]] /= ArgDouble;
             num++;
             return;
-
-        } catch {
-            isWarn = true;
-            Console.Write($"\nLine {num + 1} Error - Incorrect address!"); 
-            return;  
         }
+
+        if (CheckVarContain(parts[1])){
+            switch (CheckVarName(parts[1])){
+                case "string":{
+                    Errors.Print(0x07);
+                    num++;
+                    return;
+                }
+                case "byte":{
+                    varsByte[parts[1]] /= Convert.ToByte(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "short":{
+                    varsShort[parts[1]] /= Convert.ToInt16(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "float":{
+                    varsFloat[parts[1]] /= Convert.ToSingle(ArgDouble);
+                    num++;
+                    return;
+                }
+                case "double":{
+                    varsDouble[parts[1]] /= Convert.ToDouble(ArgDouble);
+                    num++;
+                    return;
+                }
+            }
+        }
+
+        registres[parts[1]] /= ArgDouble;
+        num++;
+        return;
     }
 }

@@ -1,15 +1,27 @@
 using static PC.Computer;
 using static Interpreter;
+using static Stack;
 #pragma warning disable CS8981
 struct ifl{
     public static void run(){
 
         if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
+            Console.Write(Errors.Print(0x02));
             return;
         }
-        
+
+
         try {
+            if (parts[2] == "ret"){
+                if (stackAddress == -1){
+                    num++;
+                    return;
+                }
+                num = stackAddress;
+                stackAddress = -1;
+                return;
+            }
+            
             if (registres.Keys.Contains(systemArguments[0])){ // если первый аргумент регистр
                 if (registres.Keys.Contains(systemArguments[1])){ // если второй аргумент тоже регистр
                     if (registres[systemArguments[0]] < registres[systemArguments[1]]){ // если они равны
@@ -22,8 +34,7 @@ struct ifl{
                 } else if (CheckVarContain(systemArguments[1])) { // если второй аргумент это переменная
                     switch (CheckVarName(systemArguments[1])){
                         case "string":{
-                            Console.WriteLine($"\nLine {num + 1} Error: string && register?");
-                            isWarn = true;
+                            Console.Write(Errors.Print(0x07));
                             return;
                         }
                         case "byte":{
@@ -76,8 +87,7 @@ struct ifl{
                 if (registres.Keys.Contains(systemArguments[1])){ // если второй аргумент регистр
                     switch (CheckVarName(systemArguments[0])){
                         case "string":{
-                            Console.WriteLine($"\nLine {num + 1} Error: string && register?");
-                            isWarn = true;
+                            Console.Write(Errors.Print(0x07));
                             return;
                         }
                         case "byte":{
@@ -215,9 +225,10 @@ struct ifl{
                     }
                 }
             }
+            num++;
+            return;
         } catch {
-            Console.WriteLine($"\nLine {num + 1} Error: Icorrect argument");
-            isWarn = true;
+            Console.Write(Errors.Print(0x04));
             return;
         }
 

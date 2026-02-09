@@ -1,74 +1,59 @@
-start:
-    ds operator ""
-    go calc
-end
+__start:
+    mov r1, 40
+    vec2, player
+    arr line, s[40]
+    go game
+hlt
 
-.block calc:
+.p game:
 
-    out
+    cmp system.key, Q
+    ife, go stopgame   
 
-    out "введите оператор: (+, -, /, *,  q - exit): "
-    inp operator
+    cmp system.key, A
+    ife, call actA
 
-    cmp operator "q"
-    ife go exit
+    cmp system.key, D
+    ife, call actD
+    
+    mov r2, 0
+    call printmap
+    go game
 
-    out "введите первое число: "
-    inp r1
 
-    out "введите второе число: "
-    inp r2
+.p actA:
+    sub player.x, 1
+    sub r3, 1
+    mov line[r3], "X"
+    wait, 80
+    ret
 
-    cmp operator "+"
-    ife go plus
 
-    cmp operator "-"
-    ife go minus
+.p actD:
+    add player.x, 1
+    add r3, 1
+    mov line[r3], "X"
+    wait, 80
+    ret
 
-    cmp operator "/"
-    ife go divv
 
-    cmp operator "*"
-    ife go multi
+.p printmap:
+    cmp r2, 40
+    ife, go ret
 
-    ifn go calc 
+    out, line[r2]
+    add r2, 1
+    go printmap
 
-    go calc
-end
 
-.block plus:
-    add r1 r2
-    go output
-end
 
-.block minus:
-    sub r1 r2
-    go output
-end
-
-.block divv:
-    div r1 r2
-    go output
-end
-
-.block multi:
-    mul r1 r2
-    go output
-end
-
-.block exit:
-    out "досвидания"
+.p stopgame:
     next
-end
+    out, "конец игры"
+hlt
 
-.block output:
-    out "Ответ: "
-    out r1
-    next
-    go calc
-end
 
-stop:
+__stop:
     clear registres
-    clear operator
-end
+    clear player
+hlt

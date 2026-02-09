@@ -1,31 +1,23 @@
 using static PC.Computer;
 using static Interpreter;
+using System.Numerics;
 #pragma warning disable CS8981
-struct dq{
+struct vec2{
     public static void run(){
-        
-        if(!CheckArgument.Check(2)){
+
+        if(!CheckArgument.Check(1)){
             Console.Write(Errors.Print(0x02));
             return;
         }
-                    
-        RAM += 8;
-        if (RAM >= maxRAM)
-            KillProcessRAM();
 
         if (varsNames.Contains(parts[1])){
             Console.Write(Errors.Print(0x05));
             return;
         }
 
-        try {
-            varsDouble.Add(parts[1], Convert.ToDouble(parts[2]));
-        } catch {
-            Console.Write(Errors.Print(0x06));
-            return;
-        }
-
+        vec2s.Add(parts[1], new Vector2());
         varsNames.Add(parts[1]);
+        RAM += 16;
         num++;
     }
 }

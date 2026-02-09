@@ -5,12 +5,17 @@ struct cmp{
     public static void run(){
 
         if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
+            Console.Write(Errors.Print(0x02));
             return;
         }
 
         try {
             systemArguments[0] = parts[1];
+            if (parts[1] == systemKey){
+                systemArguments[1] = parts[2];
+                num++;
+                return;
+            }
 
             if (parts[2][0] == '"'){ // если вторая часть строка
                 txt.Clear();
@@ -34,7 +39,7 @@ struct cmp{
             num++;
             return;
         } catch{
-            Errors.Print(0x04);
+            Console.Write(Errors.Print(0x04));
             return;
         }
     }

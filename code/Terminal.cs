@@ -6,8 +6,11 @@ public class Terminal
     public static string path = "";
     static bool isRun = true;
     static string[] input = new string[3];
-    static string defaultCode =
-    "start:\n    go main\nend\n\n.block main:\n    out \"welcome to hell\"\nend\n\nstop:\n    clear registres\nend";
+    const string helloCode =
+    "start:\n    go main\nend\n\n.block main:\n    out, \"welcome to hell\"\nend\n\nstop:\n    clear registres\nend";
+
+    const string calcCode = 
+    "start:\n   ds operator, \"\"     ;   создаём строковую переменную \"operator\"\n   go calc             ;   переходим к блоку calc\n\n.block calc:\n    out, \"введите оператор (+, -, *, /, q - exit): \"\n    inp, operator\n\n    cmp operator, \"q\"   ;   сравниваем значение оператора с \"q\"\n    ife, go halt        ;   если они равны, переходим к блоку halt\n\n    out, \"введите первое число: \"\n    inp, r1\n\n    out, \"введите второе число: \"\n    inp, r2\n\n    cmp operator, \"+\"\n    ife, go plus\n\n    cmp operator, \"-\"\n    ife, go minus\n\n    cmp operator, \"*\"\n    ife, go multiply\n\n    cmp operator, \"/\"\n    ife, go divide\n\n    ifn, go calc\n\nend\n\n.block halt:\nend\n\n.block plus:\n    add r1, r2\n    go output\n\n.block minus:\n    sub r1, r2\n    go output\n\n.block multiply:\n    mul r1, r2\n    go output\n\n.block divide:\n    div r1, r2\n    go output\n\n.block output:\n    out, r1\n    next\n    go calc\n\nstop:\n    clear registres\n    clear operator      ;   убираем operator из памяти\nend";
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     public static void Start(){
@@ -31,17 +34,17 @@ public class Terminal
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     static void OutputMenu(){
-        Console.WriteLine("System Control num: 130022\n");
+        Console.WriteLine("\n System Control num: 130022\n");
 
         for (;;){
-            Console.Write("user: ");
+            Console.Write(" user: ");
             string inp = Console.ReadLine() ?? "";
 
             switch (inp){
                 case "help":
                 case "?":
                 case "commands":{
-                    Console.WriteLine("\nCommands:\n    start nem\n    system monitor\n    shutdown\n    clear\n");
+                    Console.WriteLine("\n Commands:\n     start nem\n     system monitor\n     shutdown\n     clear\n");
                     break;
                 }
                 case "start nem":{
@@ -67,18 +70,20 @@ public class Terminal
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     static void OutputNEM(){
-        Console.Write("Native Execute Machine\n\n");
+        Console.Write("\n Native Execute Machine\n\n");
 
         for (;;){
-            Console.Write("nem: ");
-            #pragma warning disable CS8602
-            input = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            
+            try{
+                Console.Write(" nem: ");
+                #pragma warning disable CS8602
+                input = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                try { input[0] = input[0]; } catch {continue;}
+
                 switch (input[0]){ // input[0] - run | input[1] - file_name | input[2] - command
                     case "?":
                     case "commands":
                     case "help":{
-                        Console.WriteLine("\nCommands:\n    new filename.n\n    delete filename.n\n    list\n    analyze filename.n\n    run filename.n\n    clear\n    exit\n");
+                        Console.WriteLine("\n Commands:\n     new filename.n\n     delete filename.n\n     list\n     analyze filename.n\n     run filename.n\n     clear\n     exit\n");
                         break;
                     }
                     case "exit":{
@@ -89,7 +94,26 @@ public class Terminal
                         if (!CheckInput("new"))
                             break;
 
-                        File.WriteAllText(input[1], defaultCode);
+                        if (input.Count() < 3){
+                            File.WriteAllText(input[1], helloCode);
+                            break;
+                        }
+
+                        switch (input[2]){
+                            case "-e":{
+                                File.WriteAllText(input[1], "");
+                                break;
+                            }
+                            case "-c":{
+                                File.WriteAllText(input[1], calcCode);
+                                break;
+                            }
+                            default:{
+                                File.WriteAllText(input[1], helloCode);
+                                break;
+                            }
+
+                        }
                         break;
                     }
                     case "delete":{
@@ -123,9 +147,13 @@ public class Terminal
                     }
                     case "clear":{
                         Console.Clear();
+                        Console.WriteLine();    
                         break;
                     }
                 }    
+            } catch {
+                Console.WriteLine($" Unhandled Error. Final Line {Interpreter.num}");
+            }
         }
         
     }

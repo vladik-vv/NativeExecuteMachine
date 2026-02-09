@@ -1,15 +1,11 @@
 start:
-    ds operator ""
     go main
 end
 
 .block main:
-
-    inp operator
-    out r1
+    out, "welcome to hell"
 end
 
 stop:
     clear registres
-    clear operator
 end

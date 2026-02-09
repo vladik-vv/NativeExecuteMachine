@@ -1,8 +1,8 @@
 using static PC.Computer;
 using static Interpreter;
 #pragma warning disable CS8981
-struct end{
+struct hlt{
     public static void run(){
-        num = blocks["stop:"];
+        num = blocks["__stop:"];
     }
 }

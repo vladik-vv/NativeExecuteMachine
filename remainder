@@ -1,0 +1,30 @@
+start:
+    go main
+end
+
+.block main:
+    out, "Введите делимое число: "
+    inp, r1
+    out, "Введите делитель: "
+    inp, r2
+
+    div r1, r2
+
+    cmp rnr, 0
+    ife, go finish
+    ifn, go nefinish
+    
+end
+
+.block finish:
+    out, "Остатка нету"
+end
+
+.block nefinish:
+    out, "Остаток есть: "
+    out, rnr
+end
+
+stop:
+    clear registres
+end

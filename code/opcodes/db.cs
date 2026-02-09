@@ -5,7 +5,7 @@ struct db{
     public static void run(){
 
         if(!CheckArgument.Check(2)){
-            Errors.Print(0x02);
+            Console.Write(Errors.Print(0x02));
             return;
         }
                     
@@ -14,14 +14,14 @@ struct db{
             KillProcessRAM();
 
         if (varsNames.Contains(parts[1])){
-            Errors.Print(0x05);
+            Console.Write(Errors.Print(0x05));
             return;
         }
 
         try {
             varsByte.Add(parts[1], Convert.ToByte(parts[2]));
         } catch {
-            Errors.Print(0x06);
+            Console.Write(Errors.Print(0x06));
             return;
         }
 
