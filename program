@@ -1,8 +1,0 @@
-__start:
-    mov r2, 150
-    mov r1, r2
-    div r1, 3
-    out r1, 0
-
-__stop:
-    clear registres

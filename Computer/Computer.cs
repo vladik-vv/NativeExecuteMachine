@@ -29,14 +29,14 @@ static class Computer
         Console.WriteLine($"| CPU (1) 0.01 / 0.20 GHz");
         Console.WriteLine($"|");
         Console.WriteLine($"| Usage Registres CPU");
-        Console.WriteLine($"| r1: {registres["r1"]} / {double.MaxValue}");
-        Console.WriteLine($"| r2: {registres["r2"]} / {double.MaxValue}");
-        Console.WriteLine($"| r3: {registres["r3"]} / {double.MaxValue}");
-        Console.WriteLine($"| r4: {registres["r4"]} / {double.MaxValue}");
-        Console.WriteLine($"| r5: {registres["r5"]} / {double.MaxValue}");
-        Console.WriteLine($"| rnd: {registres["rnd"]} / {double.MaxValue}");
-        Console.WriteLine($"| rnr: {registres["rnr"]} / {double.MaxValue}");
-        Console.WriteLine($"| rvc: {registres["rvc"]} / {double.MaxValue}");
+        Console.WriteLine($"| r1: {registres["r1"]} / {long.MaxValue}");
+        Console.WriteLine($"| r2: {registres["r2"]} / {long.MaxValue}");
+        Console.WriteLine($"| r3: {registres["r3"]} / {long.MaxValue}");
+        Console.WriteLine($"| r4: {registres["r4"]} / {long.MaxValue}");
+        Console.WriteLine($"| r5: {registres["r5"]} / {long.MaxValue}");
+        Console.WriteLine($"| rnd: {registres["rnd"]} / {long.MaxValue}");
+        Console.WriteLine($"| rnr: {registres["rnr"]} / {long.MaxValue}");
+        Console.WriteLine($"| rvc: {registres["rvc"]} / {long.MaxValue}");
         Console.WriteLine("------------------------------------------------------------");
     }
 

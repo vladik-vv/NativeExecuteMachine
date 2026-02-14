@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using static Parser;
 public static class Terminal
 {   
     static string currentMode = "menu";
@@ -9,7 +9,7 @@ public static class Terminal
     "__start:\n    go main\n\n.p main:\n    out, \"welcome to hell\"\n\n__stop:\n    clear registres";
 
     const string calcCode = 
-    "start:\n   ds operator, \"\"     ;   создаём строковую переменную \"operator\"\n   go calc             ;   переходим к блоку calc\n\n.block calc:\n    out, \"введите оператор (+, -, *, /, q - exit): \"\n    inp, operator\n\n    cmp operator, \"q\"   ;   сравниваем значение оператора с \"q\"\n    ife, go halt        ;   если они равны, переходим к блоку halt\n\n    out, \"введите первое число: \"\n    inp, r1\n\n    out, \"введите второе число: \"\n    inp, r2\n\n    cmp operator, \"+\"\n    ife, go plus\n\n    cmp operator, \"-\"\n    ife, go minus\n\n    cmp operator, \"*\"\n    ife, go multiply\n\n    cmp operator, \"/\"\n    ife, go divide\n\n    ifn, go calc\n\nend\n\n.block halt:\nend\n\n.block plus:\n    add r1, r2\n    go output\n\n.block minus:\n    sub r1, r2\n    go output\n\n.block multiply:\n    mul r1, r2\n    go output\n\n.block divide:\n    div r1, r2\n    go output\n\n.block output:\n    out, r1\n    next\n    go calc\n\nstop:\n    clear registres\n    clear operator      ;   убираем operator из памяти\nend";
+    "__start:\n   ds operator, \"\"     ;   создаём строковую переменную \"operator\"\n   go calc             ;   переходим к блоку calc\n\n.p calc:\n    out, \"введите оператор (+, -, *, /, q - exit): \"\n    inp, operator\n\n    cmp operator, \"q\"   ;   сравниваем значение оператора с \"q\"\n    ife, go halt        ;   если они равны, переходим к блоку halt\n\n    out, \"введите первое число: \"\n    inp, r1\n\n    out, \"введите второе число: \"\n    inp, r2\n\n    cmp operator, \"+\"\n    ife, go plus\n\n    cmp operator, \"-\"\n    ife, go minus\n\n    cmp operator, \"*\"\n    ife, go multiply\n\n    cmp operator, \"/\"\n    ife, go divide\n\n    ifn, go calc\n\nhlt\n\n.p halt:\n    hlt\n\n.p plus:\n    add r1, r2\n    go output\n\n.p minus:\n    sub r1, r2\n    go output\n\n.p multiply:\n    mul r1, r2\n    go output\n\n.p divide:\n    div r1, r2\n    go output\n\n.p output:\n    out, r1\n    next\n    go calc\n\n__stop:\n    clear registres\n    clear operator      ;   убираем operator из памяти\n    hlt";
 
     public static void Start(){
         Console.Clear();
@@ -129,14 +129,14 @@ public static class Terminal
                     if (!CheckInput("run"))
                         break;
 
-                    Interpreter.Run("run");
+                    Run("run");
                     break;
                 }
                 case "dis":{
                     if (!CheckInput("dis"))
                         break;
 
-                    Interpreter.Run("dis");
+                    Run("dis");
                     break;
                 }
                 case "clear":{

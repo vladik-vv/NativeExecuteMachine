@@ -1,0 +1,20 @@
+using System.Text;
+using static Parser;
+static class Errors{
+    static readonly Dictionary<byte, string> err = new Dictionary<byte, string>{
+        {0x00, $"\nLine {numberLine + 1}. Error 0x00: Instruction not found"},
+        {0x01, $"\nLine {numberLine + 1}. Error 0x01: Address is not exist"},
+        {0x02, $"\nLine {numberLine + 1}. Error 0x02: Incorrect number of arguments"},
+        {0x03, $"\nLine {numberLine + 1} Error 0x03: Incorrect block name"},
+        {0x04, $"\nLine {numberLine + 1} Error 0x04: Incorrect arguments"},
+        {0x05, $"\nLine {numberLine + 1} Error 0x05: Redefinition of symbol"},
+        {0x06, $"\nLine {numberLine + 1} Errors 0x06 Segmentation fault"},
+        {0x07, $"\nLine {numberLine + 1} Error 0x07: Typing error"},
+        {0x08, $"\nLine {numberLine + 1} Error 0x08: Incorrect name address!"}
+    };
+
+    public static void Print(byte code){
+        Console.Write($"{err[code]}\n");
+        isWarn = true;
+    }
+}

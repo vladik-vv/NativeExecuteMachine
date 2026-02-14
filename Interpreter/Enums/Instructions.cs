@@ -1,0 +1,27 @@
+public enum Instructions{
+    _mov,
+    _add,
+    _sub,
+    _div,
+    _mul,
+    _out,
+    _hlt,
+    _arr,
+    _db,
+    _dw,
+    _dd,
+    _dq,
+    _ds,
+    _go,
+    _call,
+    _ife,
+    _ifn,
+    _ifl,
+    _ifh,
+    _ret,
+    _vec2,
+    _vec3,
+    _vec4,
+    _clear
+
+}
