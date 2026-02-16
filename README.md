@@ -1,5 +1,3 @@
-NEM Assembly
-
 **Native Execute Machine Assembly** — ассемблер для виртуальной машины из игры zabvensk.
 
 ## Версия 1.0
