@@ -226,7 +226,7 @@ struct Change{
             }
 
             case _inp:{
-                string inp = Console.ReadLine();
+                string inp = Console.ReadLine() ?? "0";
                 switch (typeArg1){
                     case _registres: registres[nameArg1] = Convert.ToDouble(inp); return;
                     case _byte: byteVars[nameArg1] = Convert.ToByte(inp); return;
