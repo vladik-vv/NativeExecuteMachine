@@ -20,6 +20,9 @@ struct Change{
             case _vector4w: vec4s[nameArg1].Set(doubleValue, mode, 'W'); break;
         }
 
+        int mx = matrix_x ?? 0;
+        int my = matrix_y ?? 0;
+
         switch (mode){
             case _mov:{    // переместить
                 switch (typeArg1){
@@ -34,6 +37,8 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] = floatValue; return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] = doubleValue; return;
                     case _stringARR: stringArrs[nameArg1][elementNumArg1 ?? 0] = value; return;
+                    case _stringMatrix2: Matrix2_s[nameArg1][my, mx] = value; return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] = doubleValue; return;  
                 } return;
             }
 
@@ -50,6 +55,8 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] += floatValue; return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] += doubleValue; return;
                     case _stringARR: stringArrs[nameArg1][elementNumArg1 ?? 0] += value; return;
+                    case _stringMatrix2: Matrix2_s[nameArg1][my, mx] += value; return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] += doubleValue; return;
                 } return;
             }
             
@@ -65,7 +72,9 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] -= floatValue; return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] -= doubleValue; return;
                     case _string:
+                    case _stringMatrix2:
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] -= doubleValue; return;
                 } return;
             }
 
@@ -81,7 +90,9 @@ struct Change{
                     case _floatARR: registres["rnr"] = floatArrs[nameArg1][elementNumArg1 ?? 0] % floatValue; floatArrs[nameArg1][elementNumArg1 ?? 0] /= floatValue; return;
                     case _doubleARR: registres["rnr"] = doubleArrs[nameArg1][elementNumArg1 ?? 0] % doubleValue; doubleArrs[nameArg1][elementNumArg1 ?? 0] /= doubleValue; return;
                     case _string:
+                    case _stringMatrix2:
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] /= doubleValue; return;
                 } return;
             }
             
@@ -97,7 +108,9 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] *= floatValue; return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] *= doubleValue; return;
                     case _string:
+                    case _stringMatrix2: 
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] *= doubleValue; return;
                 } return;
             }
 
@@ -113,7 +126,9 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] = (float)System.Math.Cos(floatValue); return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] = System.Math.Cos(doubleValue); return;
                     case _string:
+                    case _stringMatrix2: 
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] = System.Math.Cos(doubleValue); return;
                 } return;
             }
 
@@ -129,7 +144,9 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] = (float)System.Math.Sin(floatValue); return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] = System.Math.Sin(doubleValue); return;
                     case _string:
+                    case _stringMatrix2: 
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] = System.Math.Sin(doubleValue); return;
                 } return;
             }
             
@@ -145,7 +162,9 @@ struct Change{
                     case _floatARR: floatArrs[nameArg1][elementNumArg1 ?? 0] = (float)System.Math.Tan(floatValue); return;
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] = System.Math.Tan(doubleValue); return;
                     case _string:
+                    case _stringMatrix2:
                     case _stringARR: Errors.Print(0x08); return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] = System.Math.Tan(doubleValue); return;
                 } return;
             }
 
@@ -239,6 +258,8 @@ struct Change{
                     case _doubleARR: doubleArrs[nameArg1][elementNumArg1 ?? 0] = Convert.ToDouble(inp); return;
                     case _string: stringVars[nameArg1] = inp; return;
                     case _stringARR: Errors.Print(0x08); stringArrs[nameArg1][elementNumArg1 ?? 0] = inp; return;
+                    case _doubleMatrix2: Matrix2_q[nameArg1][my, mx] = Convert.ToDouble(inp); return;
+                    case _stringMatrix2: Matrix2_s[nameArg1][my, mx] = inp; return;
                 } return;
             }
 

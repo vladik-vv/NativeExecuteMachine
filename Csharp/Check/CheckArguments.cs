@@ -13,7 +13,9 @@ struct CheckArguments{
     private static Types? currentType;
     private static string? nameArg1; // имя аргумента 1
     private static Types? typeArg1; // тип аргумента 1
-    private static int elementNumberArg1; // номер элемента массива 
+    private static int elementNumberArg1; // 1 номер элемента массива 
+    private static int matrix_x;
+    private static int matrix_y;
     private static string Argument2 = ""; // Аргумент два - хранит в себе готовое значение
 
     public static void Run(string _instruction, string? _arg1, string? _arg2, string _line){
@@ -29,7 +31,7 @@ struct CheckArguments{
 
         CheckArgs();
 
-        Executer.Start(instruction, currentType, typeArg1, elementNumberArg1, nameArg1, Argument2, line);
+        Executer.Start(instruction, currentType, typeArg1, elementNumberArg1, nameArg1, Argument2, matrix_x, matrix_y, line);
     }
    
     private static void CheckArgs(){
@@ -88,6 +90,14 @@ struct CheckArguments{
                 GetValueToArg2();
                 break;
             }
+            case "mx2_s":{
+                GetMX2("string");
+                break;
+            }
+            case "mx2_q":{
+                GetMX2("double");
+                break;
+            }
             case "popa":
             case "pusha":{
                 break;
@@ -118,6 +128,10 @@ struct CheckArguments{
         
 
         else if (arg1.Contains('[') && arg1.Contains(']')){ // если первый аргумент это элемент массива
+            if (arg1.Contains('*')){ // если массив двумерный
+                OneNumberElementMatrix2();
+                return;
+            }
             nameArg1 = arg1.Replace('[', ' ').Replace(']', ' ').Split()[0];
             elementNumberArg1 = NumberElementArr(arg1.Replace('[', ' ').Replace(']', ' ').Split()[1]);
 
@@ -184,6 +198,10 @@ struct CheckArguments{
         }
 
         else if (arg2.Contains('[') && arg2.Contains(']')){ // если второй аргумент это элемент массива
+            if (arg2.Contains('*')){ // если массив двумерный
+                TwoNumberElementMatrix2();
+                return;
+            }
             string nameA = arg2.Replace('[', ' ').Replace(']', ' ').Split()[0];
             int numberA = NumberElementArr(arg2.Replace('[', ' ').Replace(']', ' ').Split()[1]);
 
@@ -294,27 +312,27 @@ struct CheckArguments{
             return (int)registres[element];
         } else if (nameVars.Contains(element)){
             if (byteVars.ContainsKey(element)) return byteVars[element];
-            if (shortVars.ContainsKey(element)) return byteVars[element];
-            if (floatVars.ContainsKey(element)) return byteVars[element];
-            if (doubleVars.ContainsKey(element)) return byteVars[element];
+            if (shortVars.ContainsKey(element)) return shortVars[element];
+            if (floatVars.ContainsKey(element)) return Convert.ToInt32(floatVars[element]);
+            if (doubleVars.ContainsKey(element)) return Convert.ToInt32(doubleVars[element]);
             return Convert.ToInt32(element);
         } else if (element.Contains('.')){
             string name = element.Substring(0, element.IndexOf('.'));
             if (vec2s.ContainsKey(name)){ // если вектор2
-                currentType = Types._double;
+                currentType = _double;
                 switch (element[^1]){
                     case 'x': return (int)vec2s[name].X;
                     case 'y': return (int)vec2s[name].Y;
                 }
             } else if (vec3s.ContainsKey(name)){ // если вектор3
-                currentType = Types._double;
+                currentType = _double;
                 switch (element[^1]){
                     case 'x': return (int)vec3s[name].X;
                     case 'y': return (int)vec3s[name].Y;
                     case 'z': return (int)vec3s[name].Z;
                 }
             } else if (vec4s.ContainsKey(name)){ // если вектор4
-                currentType = Types._double;
+                currentType = _double;
                 switch (element[^1]){
                     case 'x': return (int)vec4s[name].X;
                     case 'y': return (int)vec4s[name].Y;
@@ -332,4 +350,60 @@ struct CheckArguments{
         }
     }
 
+    private static void GetMX2(string mode){ // матрица 2д
+        if (mode == "string"){ 
+            string[] inp = line.Split('*', ' ');
+            // mx2_s name, 8*8
+
+            nameArg1 = inp[1];
+            typeArg1 = _stringMatrix2;
+            matrix_x = Convert.ToInt32(inp[2]); // x
+            matrix_y = Convert.ToInt32(inp[3]); // y
+        } else {
+            string[] inp = line.Split('*', ' ');
+            // mx2_s name, 8*8
+
+            nameArg1 = inp[1];
+            typeArg1 = _doubleMatrix2;
+            matrix_x = Convert.ToInt32(inp[2]); // x
+            matrix_y = Convert.ToInt32(inp[3]); // y
+        }
+    }
+
+    private static void OneNumberElementMatrix2(){    // argument 1
+        string[] inp = line.Split()[1].Replace('[', ' ').Replace(']', ' ').Split('*', ' ');
+
+        nameArg1 = inp[0].Trim();
+        matrix_y = Convert.ToInt32(inp[1]);
+        matrix_x = Convert.ToInt32(inp[2]);
+
+        if (Matrix2_q.ContainsKey(nameArg1)){
+            typeArg1 = _doubleMatrix2;
+            return;
+        } else {
+            typeArg1 = _stringMatrix2;
+            return;
+        }
+
+    }
+
+    private static void TwoNumberElementMatrix2(){    // value
+        int n = 0;
+        if (instruction == "out"){ // если инструкция типа вывод, то элементы сдвигаются на 1 назад
+            n++;                   // если не понятно простите(
+        }
+        string[] inp = line.Split()[2 - n].Replace('[', ' ').Replace(']', ' ').Split('*', ' ');
+
+        string name = inp[0].Trim();
+        int _y = Convert.ToInt32(inp[1]);
+        int _x = Convert.ToInt32(inp[2]);
+
+        if (Matrix2_q.ContainsKey(name)){
+            Argument2 = Matrix2_q[name][_y, _x].ToString();
+            return;
+        } else {
+            Argument2 = Matrix2_s[name][_y, _x].ToString();
+            return;
+        }
+    }
 }

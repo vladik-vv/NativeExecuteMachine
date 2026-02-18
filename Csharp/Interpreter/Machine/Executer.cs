@@ -2,6 +2,7 @@ using static Types;
 using static Instructions;
 using static Parser;
 using static System.Convert;
+using System.Numerics;
 
 struct Executer{
     private static string opcode;
@@ -10,6 +11,8 @@ struct Executer{
     public static int? elementNumArg1; // номер элемента массива  
     public static string? nameArg1; // имя переменной
     public static string value;  // готовое значение, которым изменяем
+    public static int? matrix_x;
+    public static int? matrix_y;
     public static byte byteValue; // ниже значения, которые уже конвертированы
     public static short shortValue;
     public static float floatValue;
@@ -45,6 +48,8 @@ struct Executer{
         {"arrd", () => CreateArr.Execute(_floatARR)},
         {"arrq", () => CreateArr.Execute(_doubleARR)},
         {"arrs", () => CreateArr.Execute(_stringARR)},
+        {"mx2_s", () => CreateMX2.Execute(_stringMatrix2)},
+        {"mx2_q", () => CreateMX2.Execute(_doubleMatrix2)},
         {"out", () => Out.Execute()},
         {"go", () => GoTo.Execute(_go, value)},
         {"call", () => GoTo.Execute(_call, value)},
@@ -71,13 +76,15 @@ struct Executer{
         // matrix4 - массив 4д
     };
     
-    public static void Start(string _instruction, Types? _currentType, Types? _typeArg1, int _elementNumArg1, string? _nameArg1,  string _value, string _line){
+    public static void Start(string _instruction, Types? _currentType, Types? _typeArg1, int _elementNumArg1, string? _nameArg1,  string _value, int? _matrix_x, int? _matrix_y, string _line){
         opcode = _instruction;
         currentType = _currentType;
         typeArg1 = _typeArg1;
         elementNumArg1 = _elementNumArg1;
         nameArg1 = _nameArg1;
         value = _value;
+        matrix_x = _matrix_x;
+        matrix_y = _matrix_y;
         line = _line;
         
         CheckTypeAndConvertValue(); 
@@ -86,7 +93,7 @@ struct Executer{
     }
 
     static void CheckTypeAndConvertValue(){ // проверяем, какой тип у 1 аргумента и конвертируем в этот тип готовое значение (2 аргумент).
-        if (opcode == "pusha" || opcode == "popa" || opcode == "pop" || opcode == "push" || opcode == "inp" || opcode == "clear" || opcode == "lng" || opcode == "lngsq" || opcode == "max" || opcode == "min" || opcode == "len" || opcode == "srt") 
+        if (opcode == "pusha" || opcode == "popa" || opcode == "pop" || opcode == "push" || opcode == "inp" || opcode == "clear" || opcode == "lng" || opcode == "lngsq" || opcode == "max" || opcode == "min" || opcode == "len" || opcode == "srt" || opcode == "mx2_s" || opcode == "mx2_q") 
             return;
             
         switch (typeArg1){
@@ -101,6 +108,7 @@ struct Executer{
             case _vector4x:
             case _vector4y:
             case _vector4z:
+            case _doubleMatrix2:
             case _vector4w:{
                 doubleValue = ToDouble(value); return;
             }

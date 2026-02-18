@@ -25,6 +25,8 @@ struct Parser
     public static Dictionary<string, float[]> floatArrs = new Dictionary<string, float[]>();
     public static Dictionary<string, double[]> doubleArrs = new Dictionary<string, double[]>();
     public static Dictionary<string, string[]> stringArrs = new Dictionary<string, string[]>();
+    public static Dictionary<string, string[,]> Matrix2_s = new Dictionary<string, string[,]>();
+    public static Dictionary<string, double[,]> Matrix2_q = new Dictionary<string, double[,]>();
     public static Dictionary<string, Vector2> vec2s = new Dictionary<string, Vector2>();
     public static Dictionary<string, Vector3> vec3s = new Dictionary<string, Vector3>();
     public static Dictionary<string, Vector4> vec4s = new Dictionary<string, Vector4>();
@@ -67,6 +69,8 @@ struct Parser
         floatArrs.Clear();
         doubleArrs.Clear();
         stringArrs.Clear();
+        Matrix2_q.Clear();
+        Matrix2_s.Clear();
         blocks.Clear();
         codeParts.Clear();
     }

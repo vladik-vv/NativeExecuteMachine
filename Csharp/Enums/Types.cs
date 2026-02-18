@@ -12,6 +12,8 @@ public enum Types
     _floatARR,
     _doubleARR,
     _stringARR,
+    _stringMatrix2,
+    _doubleMatrix2,
     _vector2,
     _vector3,
     _vector4,
