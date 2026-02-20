@@ -71,7 +71,6 @@ struct Executer{
         {"push", () => OStack.Execute(_push)},
         {"pusha", () => OStack.Execute(_pusha)},
         {"hlt", () => ExecuteHalt()},
-        // matrix2 - массив 2д
         // matrix3 - массив 3д
         // matrix4 - массив 4д
     };
